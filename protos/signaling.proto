@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package signaling;
+
+option go_package="/protos";
+
+service Signaling {
+    rpc Join(JoinRequest) returns (JoinResponse) {}
+    rpc Leave(LeaveRequest) returns (LeaveResponse) {}
+    rpc Stream(StreamRequest) returns (stream StreamResponse) {}
+}
+
+
+message JoinRequest {
+    string room = 1;
+    string user = 2;
+}
+
+message JoinResponse {
+    int32 code = 1;
+}
+
+
+message LeaveRequest {
+    string room = 1;
+    string user = 2;
+}
+
+message LeaveResponse {
+    int32 code = 1;
+}
+
+message StreamRequest {
+    string room = 1;
+    string user = 2;
+}
+
+
+
+message Login {
+    string user = 1;
+}
+
+message Leave {
+    string user = 1;
+}
+
+message Message {
+    string user    = 1;
+    string message = 2;
+}
+
+message Shutdown {}
+
+message StreamResponse {
+    
+    oneof event {
+        Login login = 1;
+        Leave leave = 2;
+        Message message = 3;
+        Shutdown shutdown = 4;
+    }
+}
